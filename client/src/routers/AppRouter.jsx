@@ -9,6 +9,7 @@ import ResultTable from "@/pages/ResultTable";
 import ResultChart from "@/pages/ResultChart";
 import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
 import { useAuth } from "../context/AuthContext"; // Impor useAuth
+import Dashboard from "@/pages/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <RegisterPage />,
+    },
+    {
+        path: "/dashboard",
+        element: (
+            <PrivateRoute>
+                <Dashboard />
+            </PrivateRoute>
+        ),
     },
     {
         path: "/check",

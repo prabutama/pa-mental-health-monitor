@@ -38,7 +38,7 @@ def map_phrase_to_category(phrase, mapping):
 activities_mapping = {
     'low': [
         'istirahat', 'duduk', 'menonton tv', 'tidur', 'relaksasi', 'bermeditasi', 
-        'mendengarkan musik', 'membaca buku', 'tiduran', 'main ponsel', 'berbaring', 'rebahan'
+        'mendengarkan musik', 'membaca buku', 'tiduran', 'main ponsel', 'berbaring', 'rebahan'  
     ],
     'moderate': [
         'berjalan', 'bekerja', 'mengurus pekerjaan rumah', 'yoga', 'berkebun', 

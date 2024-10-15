@@ -1,8 +1,8 @@
-"""empty message
+"""New Migrate
 
-Revision ID: 563f9f584f26
+Revision ID: ce1a0b3eee61
 Revises: 
-Create Date: 2024-09-29 20:21:03.433432
+Create Date: 2024-10-15 12:40:36.621437
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '563f9f584f26'
+revision = 'ce1a0b3eee61'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,9 +23,10 @@ def upgrade():
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('email', sa.String(length=100), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
-    sa.Column('usia', sa.Integer(), nullable=False),
-    sa.Column('kelamin', postgresql.ENUM('laki-laki', 'perempuan', name='gender'), nullable=False),
+    sa.Column('age', sa.Integer(), nullable=False),
+    sa.Column('gender', postgresql.ENUM('male', 'female', name='gender'), nullable=False),
     sa.Column('role', postgresql.ENUM('user', 'admin', name='role'), nullable=False),
+    sa.Column('occupation', sa.String(length=100), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -43,6 +44,7 @@ def upgrade():
     sa.Column('diastolic', sa.Float(precision=7), nullable=False),
     sa.Column('sleep_time', sa.Float(), nullable=False),
     sa.Column('activities', sa.String(length=50), nullable=True),
+    sa.Column('activity_category', sa.String(length=20), nullable=True),
     sa.Column('mood', sa.String(length=50), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),

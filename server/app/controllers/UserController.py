@@ -1,5 +1,7 @@
+from sqlite3 import IntegrityError
 from app.models.User import User
 import datetime
+import re
 
 from flask import request
 from flask_jwt_extended import *
@@ -24,7 +26,6 @@ def register():
     try:
         data = request.get_json()
         # Ambil data dari form request
-        id = data.get('id')
         name = data.get('name')
         email = data.get('email')
         password = data.get('password')
@@ -32,6 +33,15 @@ def register():
         age = data.get('age')  
         role = 'user' 
         
+        # Validasi input
+        if not all([name, email, password, gender, age]):
+            return response.BadRequest([], "Semua field harus diisi")
+
+        # Validasi format email
+        email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        if not re.match(email_regex, email):
+            return response.BadRequest([], "Format email tidak valid")
+
         # Cek apakah email sudah terdaftar
         user_exists = User.query.filter_by(email=email).first()
         if user_exists:
@@ -59,16 +69,19 @@ def register():
 
         return response.success(data, "Berhasil mendaftar")
 
+    except IntegrityError:
+        db.session.rollback()
+        return response.BadRequest([], "Email sudah terdaftar")
     except Exception as e:
         db.session.rollback()
-        print(f"Error: {e}")  # Ini akan memberikan informasi lebih detail tentang error yang terjadi
+        print(f"Error: {e}")
         return response.BadRequest([], "Gagal mendaftar")
+
 
 def login():
     try:
         # Mengambil email dan password dari request
         data = request.get_json()
-        id = data.get('id')
         email = data.get('email')
         password = data.get('password')
 
