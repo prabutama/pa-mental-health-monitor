@@ -24,6 +24,7 @@ def register():
     try:
         data = request.get_json()
         # Ambil data dari form request
+        id = data.get('id')
         name = data.get('name')
         email = data.get('email')
         password = data.get('password')
@@ -67,6 +68,7 @@ def login():
     try:
         # Mengambil email dan password dari request
         data = request.get_json()
+        id = data.get('id')
         email = data.get('email')
         password = data.get('password')
 
@@ -88,6 +90,8 @@ def login():
         dataUser = singleObject(user)
         expires = datetime.timedelta(days=7)
         expires_refresh = datetime.timedelta(days=7)
+
+        data = {"id": str(user.id), "email": user.email}
 
         access_token = create_access_token(identity=data, fresh=True, expires_delta=expires)
         refresh_token = create_refresh_token(identity=data, expires_delta=expires_refresh)

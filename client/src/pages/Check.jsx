@@ -32,25 +32,38 @@ export default function Check() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Check if all required fields are filled
+        const { skin_tension, sleep_time, body_temp, heart_rate, systolic, diastolic } = formData;
+        if (!skin_tension || !sleep_time || !body_temp || !heart_rate || !systolic || !diastolic) {
+            console.error('All fields must be filled');
+            return;
+        }
+
         // Get token from localStorage
         const token = localStorage.getItem('access_token');
-        console.log('Access Token:', token);
+        if (!token) {
+            console.error('Token not found. Please login again.');
+            return;
+        }
 
         try {
-            // Send data using axios with Authorization header
-            const response = await axios.post('http://127.0.0.1:5000/check', formData, {
-                headers: {
-                    Authorization: `Bearer ${token}` // Attach the token in the header
+            // Add user_id to the formData before sending
+            const response = await axios.post(
+                'http://127.0.0.1:5000/check',
+                { ...formData }, // Add user_id here
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            });
-            // Handle successful response
+            );
             console.log('Response:', response.data);
             navigate('/result/health-table');
         } catch (error) {
-            // Handle errors
             console.error('Error:', error.response ? error.response.data : error.message);
         }
     };
+
 
 
     return (

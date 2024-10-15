@@ -13,6 +13,7 @@ le_activities = joblib.load("ml/le_activities.pkl")
 le_mood = joblib.load("ml/le_mood.pkl")
 le_condition = joblib.load("ml/le_condition.pkl")
 
+
 def predict_mental_health():
     try:
         # Access request parameters
@@ -55,25 +56,29 @@ def predict_mental_health():
         # Decode the prediction
         mental_condition = le_condition.inverse_transform(prediction)[0]
 
-        if (mental_condition.lower() == "normal"):
+        if mental_condition.lower() == "normal":
             mental_condition = "Keadaan mental anda saat ini sedang normal"
-        elif (mental_condition.lower() == "anxious"):
+        elif mental_condition.lower() == "anxious":
             mental_condition = "Keadaan mental anda saat ini sedang cemas"
-        elif (mental_condition.lower() == "stress"):
+        elif mental_condition.lower() == "stress":
             mental_condition = "Keadaan mental anda saat ini sedang stress"
 
+        # Get current user
         current_user = get_jwt_identity()
+        print("user", current_user)  # Untuk memastikan current_user berisi data yang benar
+        user_id = current_user.get("id")
+
         # Save the input and result to the database
         new_input = MentalHealthInput(
-            user_id=current_user.get("id"),
+            user_id=user_id,
             skin_tension=skin_tension,
             body_temperature=body_temp,
             heart_rate=heart_rate,
-            systolic=systolic,  # Use systolic as per model definition
-            diastolic=diastolic,  # Use diastolic as per model definition
+            systolic=systolic,
+            diastolic=diastolic,
             sleep_time=sleep_time,
             activities=activities_input,
-            activity_category=activity_category,  # Save the categorized activity
+            activity_category=activity_category,
             mood=mood_input,
         )
         db.session.add(new_input)

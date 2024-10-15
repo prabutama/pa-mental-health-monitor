@@ -33,6 +33,7 @@ def get_mental_health_results_by_user(user_id):
                     "diastolic": mental_health_input.diastolic,
                     "sleep_time": mental_health_input.sleep_time,
                     "activities": mental_health_input.activities,
+                    "activity_category": mental_health_input.activity_category,
                     "mood": mental_health_input.mood,
                     "mental_condition": classification.mental_condition,
                     "created_at": classification.created_at
