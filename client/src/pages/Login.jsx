@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -10,27 +11,49 @@ const LoginPage = () => {
   const { login } = useAuth(); // Ambil fungsi login dari AuthContext
   const navigate = useNavigate();
 
+  // Fungsi untuk validasi email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const loginUser = async (event) => {
     event.preventDefault(); // Mencegah pengiriman form default
 
+    // Validasi: pastikan email dan password tidak kosong
     if (!email || !password) {
-      alert('Please enter email and password');
-      return; // Hentikan eksekusi lebih lanjut
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please enter both email and password',
+      });
+      return; // Hentikan eksekusi lebih lanjut jika salah satu field kosong
+    }
+
+    // Validasi: pastikan format email benar
+    if (!validateEmail(email)) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid Email',
+        text: 'Please enter a valid email address.',
+      });
+      return; // Hentikan eksekusi jika email tidak valid
     }
 
     try {
-      const res = await axios.post('http://127.0.0.1:5000/login', {
-        email: email,
-        password: password
-      }, {
-        headers: {
-          'Content-Type': 'application/json' // Mengatur header Content-Type
+      // Proses login via API
+      const res = await axios.post(
+        'http://127.0.0.1:5000/login',
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json', // Mengatur header Content-Type
+          },
         }
-      });
-
-      // Periksa respons
-      console.log("Response: ", res.data);
-      console.log("Status: ", res.status);
+      );
 
       // Ambil token dan user dari respons
       const { access_token, refresh_token, user } = res.data.data;
@@ -43,11 +66,15 @@ const LoginPage = () => {
       // Gunakan login dari AuthContext
       login(access_token, user); // Panggil fungsi login
 
-      console.log(localStorage.getItem('access_token'));
+      // Pindah ke halaman lain setelah login sukses
       navigate('/check'); // Navigasi ke halaman check
     } catch (error) {
-      console.error("Login failed: ", error.response ? error.response.data : error.message);
-      alert('Login failed. Please check your credentials.');
+      // Tampilkan SweetAlert2 jika login gagal
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: error.response?.data?.message || 'Incorrect email or password. Please try again.',
+      });
     }
   };
 
@@ -67,10 +94,10 @@ const LoginPage = () => {
         <p className="text-center text-black-500 mb-12">Hi! Welcome back, you've been missed</p>
         <form className="space-y-6" onSubmit={loginUser}>
           <div className="relative mb-6">
-            <input name='email' type="email" id="email" className="input-underline w-full mb-5" placeholder="Enter your username or email address" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input name="email" type="email" id="email" className="input-underline w-full mb-5" placeholder="Enter your username or email address" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div className="relative mb-70">
-            <input name='password' type="password" id="password" className="input-underline w-full" placeholder="Enter your Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input name="password" type="password" id="password" className="input-underline w-full" placeholder="Enter your Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             <a href="#" className="absolute right-0 top-full text-sm text-green-600 hover:text-green-500 mt-1">
               Forgot Password?
             </a>

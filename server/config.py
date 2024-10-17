@@ -7,11 +7,12 @@ class Config(object):
     DATABASE = str(os.environ.get('DB_DATABASE'))
     USERNAME = str(os.environ.get('DB_USERNAME'))
     PASSWORD = str(os.environ.get('DB_PASSWORD'))
+    PORT = str(os.environ.get('DB_PORT', '5433'))  # Tambahkan port, default 5433
 
     JWT_SECRET_KEY = str(os.environ.get('JWT_SECRET'))
-    SECRET_KEY = str(os.environ.get('SECRET_KEY')) 
+    SECRET_KEY = str(os.environ.get('SECRET_KEY'))
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + USERNAME + ':' + PASSWORD + '@' + HOST + '/' + DATABASE
+    # Tambahkan port dalam URI
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT + '/' + DATABASE
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
-
