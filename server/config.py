@@ -7,7 +7,7 @@ class Config(object):
     DATABASE = str(os.environ.get('DB_DATABASE'))
     USERNAME = str(os.environ.get('DB_USERNAME'))
     PASSWORD = str(os.environ.get('DB_PASSWORD'))
-    PORT = str(os.environ.get('DB_PORT', '5433'))  # Tambahkan port, default 5433
+    PORT = str(os.environ.get('DB_PORT', '5432'))  
 
     JWT_SECRET_KEY = str(os.environ.get('JWT_SECRET'))
     SECRET_KEY = str(os.environ.get('SECRET_KEY'))
