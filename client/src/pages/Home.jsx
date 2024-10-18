@@ -115,7 +115,7 @@ const Home = () => {
         </div>
       </div>
       {/* About Us */}
-      <div id="aboutUs" className="aboutUS p-10 pt-20 flex">
+      <div id="aboutUs" className="aboutUS p-10 pt-20 flex justify-center gap-10">
         <div className="imgAboutUs">
           <img src={aboutUs} />
         </div>
@@ -141,7 +141,7 @@ const Home = () => {
           Empowering Minds Our Mental Health Consulting Services
         </h1>
         <div className="listServices pt-20">
-          <ul className="flex justify-between">
+          <ul className="flex justify-center gap-20">
             <li>
               <div className="tesKesehatan w-80 h-64 pt-10 p-5 border-2 border-black rounded-3xl">
                 <h1 className="font-semibold">Tes Kesehatan Mental</h1>
@@ -149,9 +149,11 @@ const Home = () => {
                   Ingin mengetahui kondisi mentalmu saat ini? Yuk, lakukan tes
                   singkat ini!
                 </h1>
-                <Button className="bg-green-700 mt-12 hover:bg-green-900 text-white font-semibold px-10 py-5 rounded-full">
-                  See Detail
-                </Button>
+                <Link to="/check">
+                  <Button className="bg-green-700 mt-12 hover:bg-green-900 text-white font-semibold px-10 py-5 rounded-full">
+                    See Detail
+                  </Button>
+                </Link>
               </div>
             </li>
             <li>

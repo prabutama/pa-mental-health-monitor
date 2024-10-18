@@ -51,12 +51,8 @@ const Navbar = () => {
                     {/* Menampilkan Login atau Nama User dan Logo Profil */}
                     {user ? (
                         <div className="flex items-center md:ml-8">
-                            <img
-                                src={user.profilePic}
-                                alt="Profile"
-                                className="w-8 h-8 rounded-full mr-2"
-                            />
-                            <span className="text-gray-800 font-semibold">{user.name}</span>
+                            <i class="bi bi-person-circle text-4xl mr-3"></i>
+                            <span className="md:ml-3 text-xl font-semibold md:my-0 my-7">{user.name}</span>
                             {/* <Button
                                 onClick={logout} // Memanggil logout dari context
                                 className="ml-4 bg-red-700 hover:bg-red-900 text-white font-semibold py-2 px-4 rounded-full"
