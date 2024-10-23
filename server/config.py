@@ -13,6 +13,6 @@ class Config(object):
     SECRET_KEY = str(os.environ.get('SECRET_KEY'))
 
     # Tambahkan port dalam URI
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT + '/' + DATABASE
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123@localhost:5432/mydb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
