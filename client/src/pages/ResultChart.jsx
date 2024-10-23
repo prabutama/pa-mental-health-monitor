@@ -228,10 +228,10 @@ const ResultChart = () => {
                 <h3 className="text-lg font-semibold mb-2">Sleep Time Chart</h3>
                 <div id="sleepChart"></div>
             </div>
-            <div className="bg-white shadow rounded-lg p-4">
+            {/* <div className="bg-white shadow rounded-lg p-4">
                 <h3 className="text-lg font-semibold mb-2">Activity Growth Chart</h3>
                 <div id="activityGrowthChart"></div>
-            </div>
+            </div> */}
         </div>
     );
 };

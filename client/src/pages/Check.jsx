@@ -119,12 +119,24 @@ export default function Check() {
 
                                     {/* Apa yang telah kamu lakukan */}
                                     <div className="mt-5">
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="kegiatan">Apa yang telah kamu
-                                            lakukan?</label>
-                                        <textarea name='activity' id="kegiatan"
+                                        <label className="block text-sm text-black-600 mb-2" htmlFor="kegiatan">Apa yang telah kamu lakukan?</label>
+                                        <select
+                                            name='activity'
+                                            id="kegiatan"
                                             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            placeholder="Ceritakan kegiatan kamu"
-                                            value={formData.activity} onChange={handleChange}></textarea>
+                                            value={formData.activity}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Pilih kegiatan kamu</option>
+                                            <option value="membaca buku">Membaca buku</option>
+                                            <option value="mendengarkan musik">Mendengarkan Musik</option>
+                                            <option value="tiduran">Tiduran</option>
+                                            <option value="santai">Berkerja</option>
+                                            <option value="berjalan">Berjalan</option>
+                                            <option value="berolahraga">Olahraga</option>
+                                            <option value="berenang">berenang</option>
+    
+                                        </select>
                                     </div>
 
                                     {/* Detak Jantung */}
@@ -140,10 +152,25 @@ export default function Check() {
                                     <div>
                                         <label className="block text-sm text-black-600 mb-2" htmlFor="perasaan">Bagaimana perasaanmu hari
                                             ini?</label>
-                                        <textarea name='mood' id="perasaan"
+                                         <select
+                                            name='mood'
+                                            id="perasaan"
                                             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            placeholder="Ceritakan tentang harimu"
-                                            value={formData.mood} onChange={handleChange}></textarea>
+                                            value={formData.mood}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Pilih kegiatan kamu</option>
+                                            <option value="bahagia">bahagia</option>
+                                            <option value="tenang">tenang</option>
+                                            <option value="netral">netral</option>
+                                            <option value="santai">santai</option>
+                                            <option value="biasa">biasa</option>
+                                            <option value="marah">marah</option>
+                                            <option value="cemas">cemas</option>
+                                            <option value="sedih">sedih</option>
+
+    
+                                        </select>
                                     </div>
 
                                     {/* Tekanan Darah */}

@@ -1,26 +1,27 @@
-import pandas as pd  # type: ignore
-from sklearn.model_selection import train_test_split  # type: ignore
-from sklearn.preprocessing import LabelEncoder  # type: ignore
-from sklearn.ensemble import RandomForestClassifier  # type: ignore
-from sklearn.metrics import classification_report  # type: ignore
-import joblib  # type: ignore
+import pandas as pd 
+from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import LabelEncoder 
+from sklearn.ensemble import RandomForestClassifier 
+from sklearn.metrics import classification_report 
+import joblib 
 
-# Load dataset
+# Membaca dataset dari file CSV
 df = pd.read_csv("ml/mental_health_conditions.csv")
 
-# Handle missing values (if any)
-df = df.dropna()  # Or use other methods like imputation if needed
+# Menghapus baris yang mengandung nilai kosong (NaN) agar data bersih
+df = df.dropna()  
 
-# Convert categorical variables to numerical
+# Menginisialisasi LabelEncoder untuk kolom kategorikal
 le_activities = LabelEncoder()
 le_mood = LabelEncoder()
 le_condition = LabelEncoder()
 
+# Mengonversi nilai kategorikal menjadi numerik menggunakan LabelEncoder
 df["Activities"] = le_activities.fit_transform(df["Activities"])
 df["Mood"] = le_mood.fit_transform(df["Mood"])
 df["Mental Condition"] = le_condition.fit_transform(df["Mental Condition"])
 
-# Define features and target variable
+# Mendefinisikan fitur (X) dan target (y)
 X = df[
     [
         "Skin Tension",
@@ -35,30 +36,36 @@ X = df[
 ]
 y = df["Mental Condition"]
 
-# Split data
+# Membagi data menjadi data pelatihan (80%) dan data pengujian (20%)
+# random_state digunakan agar pembagian data konsisten
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Train model
+# Menginisialisasi RandomForestClassifier dengan 100 pohon
+# Random state digunakan untuk menghasilkan hasil yang konsisten
 model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Melatih model menggunakan data pelatihan
 model.fit(X_train, y_train)
 
-# Evaluate model
+# Melakukan prediksi menggunakan data pengujian
 predictions = model.predict(X_test)
 
-# Check the unique values in y_test and predictions
+# Mendapatkan kelas unik yang ada di y_test dan prediksi untuk laporan klasifikasi
 unique_classes = sorted(set(y_test) | set(predictions))
 print(f"Unique classes in y_test: {set(y_test)}")
 print(f"Unique classes in predictions: {set(predictions)}")
 
-# Ensure target_names matches the number of classes
+# Mengonversi kelas menjadi string agar mudah dibaca dalam laporan
 target_names = [str(label) for label in unique_classes]
 
-# Print classification report
+# Menampilkan laporan klasifikasi yang mencakup presisi, recall, dan f1-score
+# Laporan ini membantu memahami performa model pada setiap kelas
 print(classification_report(y_test, predictions, target_names=target_names, labels=unique_classes))
 
-# Save model and encoders
+# Menyimpan model yang sudah dilatih dan LabelEncoder ke dalam file .pkl
+# Tujuannya agar model dapat digunakan kembali untuk prediksi di masa depan tanpa perlu pelatihan ulang
 joblib.dump(model, "ml/mental_health_model.pkl")
 joblib.dump(le_activities, "ml/le_activities.pkl")
 joblib.dump(le_mood, "ml/le_mood.pkl")
