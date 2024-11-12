@@ -1,17 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ResultCard from "./ResultCard";
 import logo from "@/assets/images/logo.svg";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ResultLayout() {
+  const { user } = useAuth();
+  const [mentalCondition, setMentalCondition] = useState("Loading...");
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    const fetchMentalCondition = async () => {
+      const userId = user?.id;
+      if (!userId) {
+        setMentalCondition("User ID not found.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/result/${userId}`);
+        const results = response.data.mental_health_results;
+        if (results && results.length > 0) {
+          const latestResult = results[results.length - 1].mental_condition;
+          setMentalCondition(latestResult);
+          updateSuggestions(latestResult);
+        } else {
+          setMentalCondition("No results found.");
+        }
+      } catch (error) {
+        console.error("Error fetching mental condition:", error);
+        setMentalCondition("Terjadi kesalahan saat mengambil data.");
+      }
+    };
+    fetchMentalCondition();
+  }, [user]);
+
+  const updateSuggestions = (condition) => {
+    if (condition.toLowerCase().includes("normal")) {
+      setSuggestions([
+        "Maintain your current lifestyle.",
+        "Continue regular exercise.",
+        "Keep a balanced diet."
+      ]);
+    } else if (condition.toLowerCase().includes("stress")) {
+      setSuggestions([
+        "Practice relaxation techniques.",
+        "Take regular breaks.",
+        "Consider talking to a therapist."
+      ]);
+    } else if (condition.toLowerCase().includes("cemas")) {
+      setSuggestions([
+        "Try mindfulness meditation.",
+        "Limit caffeine intake.",
+        "Engage in physical activities."
+      ]);
+    } else {
+      setSuggestions(["No specific suggestions available."]);
+    }
+  };
+
   const results = [
     {
       title: "Hasil",
-      content: "Ya, anda dinyatakan sedikit stres bulan ini",
+      content: mentalCondition,
     },
     {
       title: "Saran",
-      content: "Silahkan pergi ke kedai Gacoan terdekat",
+      content: suggestions,
     },
   ];
   return (

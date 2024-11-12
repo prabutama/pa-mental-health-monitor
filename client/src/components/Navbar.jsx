@@ -73,8 +73,12 @@ const Navbar = () => {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem><Link to="/profile">Profile</Link></DropdownMenuItem>
+                    <Link to="/profile">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    </Link>
+                    <Link to="/result">
                     <DropdownMenuItem>Lihat Hasil</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem
                       className="bg-red-500 text-white"
                       onClick={handleLogout}

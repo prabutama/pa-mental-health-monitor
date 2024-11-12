@@ -194,7 +194,7 @@ const Home = () => {
         </div>
       </div>
       {/* Artikel */}
-      <div className="artikel pt-20">
+      <div id="artikel" className="pt-20">
         <h1 className="font-semibold text-4xl text-center">
           Baca Artikel Baru
         </h1>

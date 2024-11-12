@@ -56,7 +56,7 @@ export default function Check() {
         }
       );
       console.log('Response:', response.data);
-      navigate('/result/health-table');
+      navigate('/result');
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
     }
