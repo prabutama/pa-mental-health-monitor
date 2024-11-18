@@ -66,8 +66,14 @@ const LoginPage = () => {
       // Gunakan login dari AuthContext
       login(access_token, user); // Panggil fungsi login
 
-      // Pindah ke halaman lain setelah login sukses
-      navigate('/check'); // Navigasi ke halaman check
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Successful',
+        text: 'You have successfully logged in!',
+      }).then(() => {
+        // Redirect after alert is dismissed
+        navigate('/');
+      });
     } catch (error) {
       // Tampilkan SweetAlert2 jika login gagal
       Swal.fire({

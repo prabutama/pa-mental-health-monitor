@@ -11,6 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -79,11 +88,25 @@ const Navbar = () => {
                     <Link to="/result">
                     <DropdownMenuItem>Lihat Hasil</DropdownMenuItem>
                     </Link>
-                    <DropdownMenuItem
-                      className="bg-red-500 text-white"
-                      onClick={handleLogout}
-                    >
-                      Logout
+                    <DropdownMenuItem asChild>
+                      <AlertDialog>
+                        <AlertDialogTrigger>
+                          <Button className="bg-red-500 text-white w-32">
+                            Logout
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            Are you sure you want to log out?
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleLogout}>
+                              Yes, Logout
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
