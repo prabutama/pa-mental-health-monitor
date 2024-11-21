@@ -60,19 +60,33 @@ export default function ResultLayout() {
     }
   };
 
+  // Pengkondisian untuk menampilkan pesan sesuai dengan kondisi mental
+  const getMentalConditionMessage = () => {
+    if (mentalCondition.toLowerCase().includes("normal")) {
+      return "Keadaan mental anda saat ini sedang normal.";
+    } else if (mentalCondition.toLowerCase().includes("stress")) {
+      return "Keadaan mental anda saat ini sedang stress.";
+    } else if (mentalCondition.toLowerCase().includes("cemas")) {
+      return "Keadaan mental anda saat ini sedang cemas.";
+    } else {
+      return "Tidak ada data kondisi mental.";
+    }
+  };
+
   const results = [
     {
       title: "Hasil",
-      content: mentalCondition,
+      content: getMentalConditionMessage(), // Menampilkan hasil dengan pengkondisian
     },
     {
       title: "Saran",
       content: suggestions,
     },
   ];
+
   return (
     <div>
-      <main className=" pl-20 p-10 bg-white max-md:pl-5 max-md:max-w-full">
+      <main className="pl-20 p-10 bg-white max-md:pl-5 max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col">
           <img src={logo} className="w-10 md:w-16 h-16" />
           <h1 className="text-sm md:text-3xl font-semibold mt-5">MindTrack</h1>
@@ -98,13 +112,13 @@ export default function ResultLayout() {
               className="object-contain z-10 shrink-0 mr-0 max-w-full aspect-[0.72] mt-[552px] w-[268px] max-md:mt-10"
             />
           </aside>
-            <Link to = "/">
+          <Link to="/">
             <button
               className="h-12 w-12 mt-3 border-2 border-green-500 text-green-500 rounded-full hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-500 text-xl"
             >
               ←
             </button>
-            </Link>
+          </Link>
         </div>
       </main>
     </div>

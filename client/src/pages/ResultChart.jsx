@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 const ResultChart = () => {
     const { user } = useAuth(); // Get the authenticated user from the context
     const [submittedData, setSubmittedData] = useState([]);
+    const [mentalConditions, setMentalConditions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -19,6 +20,7 @@ const ResultChart = () => {
         try {
             const response = await axios.get(`http://127.0.0.1:5000/result/${userId}`);
             setSubmittedData(response.data.mental_health_results || []);
+            setMentalConditions(response.data.mental_health_results.map(result => result.mental_condition));
         } catch (error) {
             setError(error.response?.data?.error || error.message || "An error occurred while fetching data.");
         } finally {
@@ -40,28 +42,43 @@ const ResultChart = () => {
         const heartRateData = submittedData.map(result => result.heart_rate);
         const systolicData = submittedData.map(result => result.systolic);
         const diastolicData = submittedData.map(result => result.diastolic);
-
         const sleepData = submittedData.map(result => result.sleep_time || 0); // Assuming sleep_time is in hours
 
-        const activityData = submittedData.map(result => ({
-            date: new Date(result.created_at).toLocaleDateString(),
-            activities: result.activities || { aerobics: 0, yoga: 0, meditation: 0 }
-        }));
+        // Ensure that mentalConditions is populated correctly
+        const mentalConditionMapped = mentalConditions.map(condition => {
+            if (condition === 'Normal') return 0;
+            if (condition === 'Anxious') return 1;
+            if (condition === 'Stress') return 2;
+            return -1; // In case of unexpected values
+        });
+
+        const mentalConditionCounts = [0, 0, 0]; // [Normal, Anxious, Stress]
+        mentalConditionMapped.forEach(condition => {
+            if (condition >= 0 && condition <= 2) mentalConditionCounts[condition]++;
+        });
+
+        const mentalConditionData = [{
+            name: 'Mental Condition',
+            data: mentalConditionCounts,
+        }];
 
         const commonOptions = {
             chart: {
-                type: 'line',
-                height: 200,
+                type: 'bar',
+                height: 300,
                 toolbar: { show: false },
             },
             xaxis: {
-                categories: dates,
+                categories: dates, // Use the extracted dates for X-axis categories
                 title: { text: 'Date' },
                 labels: { style: { fontSize: '10px' } },
             },
-            stroke: {
-                width: 2,
-                curve: 'smooth',
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '50%',
+                    endingShape: 'rounded',
+                },
             },
             tooltip: {
                 shared: true,
@@ -118,41 +135,56 @@ const ResultChart = () => {
                 },
             ],
             xaxis: {
-                categories: dates,
+                categories: dates, // Use the extracted dates for X-axis categories
                 title: { text: 'Date' },
             },
             colors: ['#00E396'],
             title: { text: 'Sleep Duration Over Time' },
         };
 
-        // Chart options for activity levels as a stacked bar chart
-        const activityGrowthOptions = {
+        // Chart options for Mental Condition
+        const mentalConditionOptions = {
+            ...commonOptions,
             chart: {
-                type: 'bar',
-                stacked: true,
+                type: 'line',  // Change to line chart
                 height: 300,
                 toolbar: { show: false },
             },
             series: [
                 {
-                    name: 'Aerobics',
-                    data: activityData.map(act => act.activities.aerobics),
-                },
-                {
-                    name: 'Yoga',
-                    data: activityData.map(act => act.activities.yoga),
-                },
-                {
-                    name: 'Meditation',
-                    data: activityData.map(act => act.activities.meditation),
+                    name: 'Mental Condition',
+                    data: mentalConditionMapped,
                 },
             ],
+            colors: ['#FF5733'],
+            title: { text: 'Mental Condition Over Time' },
             xaxis: {
-                categories: activityData.map(act => act.date),
+                categories: dates, // Use the extracted dates for X-axis categories
                 title: { text: 'Date' },
+                labels: {
+                    style: { fontSize: '10px' },
+                },
             },
-            colors: ['#FF6384', '#36A2EB', '#FFCE56'], // Custom colors for each activity
-            title: { text: 'Activity Levels Over Time' },
+            yaxis: {
+                min: 0,
+                max: 2,
+                tickAmount: 3,  // Mengatur jumlah tick
+                labels: {
+                    formatter: function (value) {
+                        // Mengganti angka dengan label yang sesuai
+                        const labels = ['Normal', 'Anxious', 'Stress'];
+                        return labels[value] || '';
+                    }
+                }
+            },
+            markers: {
+                size: 5,  // Add markers to points
+                colors: ['#FF5733'],
+            },
+            stroke: {
+                curve: 'smooth', // Smooth line
+                width: 3,
+            },
             legend: {
                 position: 'top',
                 horizontalAlign: 'left',
@@ -160,78 +192,57 @@ const ResultChart = () => {
                 offsetY: 5,
                 offsetX: 30,
             },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '50%',
-                    endingShape: 'rounded',
-                },
-            },
         };
 
-        // Function to create or update a chart
         const createOrUpdateChart = (selector, options) => {
             const chartElement = document.querySelector(selector);
             if (chartElement) {
-                // Create and render the new chart
                 const chart = new ApexCharts(chartElement, options);
                 chart.render();
-
-                // Store the chart instance for potential updates
                 chartElement.ApexCharts = chart;
             }
         };
 
-        // Create charts for each data set
         createOrUpdateChart("#skinTensionChart", skinTensionOptions);
         createOrUpdateChart("#bodyTemperatureChart", bodyTemperatureOptions);
         createOrUpdateChart("#bloodPressureChart", bloodPressureOptions);
         createOrUpdateChart("#heartRateChart", heartRateOptions);
-        createOrUpdateChart("#sleepChart", sleepOptions); // Updated sleep chart as a bar chart
-        createOrUpdateChart("#activityGrowthChart", activityGrowthOptions); // Activity growth chart
+        createOrUpdateChart("#sleepChart", sleepOptions);
+        createOrUpdateChart("#mentalConditionChart", mentalConditionOptions);
 
-        // Clean up the charts on component unmount
         return () => {
-            ['#skinTensionChart', '#bodyTemperatureChart', '#bloodPressureChart', '#heartRateChart', '#sleepChart', '#activityGrowthChart'].forEach(chartId => {
+            ['#skinTensionChart', '#bodyTemperatureChart', '#bloodPressureChart', '#heartRateChart', '#sleepChart', '#mentalConditionChart'].forEach(chartId => {
                 const chartElement = document.querySelector(chartId);
                 if (chartElement && chartElement.ApexCharts) {
                     chartElement.ApexCharts.destroy();
                 }
             });
         };
-    }, [submittedData]);
+    }, [submittedData, mentalConditions]);
 
-    // Handle loading and error states
     if (loading) return <p className="text-center text-lg">Loading...</p>;
     if (error) return <p className="text-red-500 text-center">Error: {error}</p>;
 
-    // Render the charts with explanatory labels
     return (
-        <div className="mt-10 w-full px-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Skin Tension Chart</h3>
+        <div className="mt-10 w-full px-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="chart-container">
                 <div id="skinTensionChart"></div>
             </div>
-            <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Body Temperature Chart</h3>
+            <div className="chart-container">
                 <div id="bodyTemperatureChart"></div>
             </div>
-            <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Blood Pressure Chart</h3>
+            <div className="chart-container">
                 <div id="bloodPressureChart"></div>
             </div>
-            <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Heart Rate Chart</h3>
+            <div className="chart-container">
                 <div id="heartRateChart"></div>
             </div>
-            <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Sleep Time Chart</h3>
+            <div className="chart-container">
                 <div id="sleepChart"></div>
             </div>
-            {/* <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Activity Growth Chart</h3>
-                <div id="activityGrowthChart"></div>
-            </div> */}
+            <div className="chart-container">
+                <div id="mentalConditionChart"></div>
+            </div>
         </div>
     );
 };

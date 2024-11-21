@@ -30,7 +30,6 @@ export default function Check() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all required fields are filled
     const { skin_tension, sleep_time, body_temp, heart_rate, systolic, diastolic } = formData;
     if (!skin_tension || !sleep_time || !body_temp || !heart_rate || !systolic || !diastolic) {
       console.error('All fields must be filled');
@@ -94,7 +93,7 @@ export default function Check() {
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
-              
+
               {/* Sleep Time */}
               <div>
                 <label className="block text-sm text-gray-600 mb-2">Waktu Tidur</label>
@@ -121,24 +120,17 @@ export default function Check() {
                 />
               </div>
 
-              {/* Activity */}
+              {/* diastolic */}
               <div>
-                <label className="block text-sm text-gray-600 mb-2">Apa yang telah kamu lakukan?</label>
-                <select
-                  name="activity"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  value={formData.activity}
+                <label className="block text-sm text-gray-600 mb-2">Tekanan Darah Diastolic</label>
+                <Input
+                  name="diastolic"
+                  type="number"
+                  placeholder="Masukkan tekanan darah"
+                  value={formData.diastolic}
                   onChange={handleChange}
-                >
-                  <option value="">Pilih kegiatan kamu</option>
-                  <option value="membaca buku">Membaca buku</option>
-                  <option value="mendengarkan musik">Mendengarkan Musik</option>
-                  <option value="tiduran">Tiduran</option>
-                  <option value="santai">Berkerja</option>
-                  <option value="berjalan">Berjalan</option>
-                  <option value="berolahraga">Olahraga</option>
-                  <option value="berenang">berenang</option>
-                </select>
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
               </div>
 
               {/* Heart Rate */}
@@ -149,6 +141,39 @@ export default function Check() {
                   type="number"
                   placeholder="Masukkan detak jantung"
                   value={formData.heart_rate}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              {/* Activity */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Apa yang telah kamu lakukan?</label>
+                <select
+                  name="activity"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  value={formData.activity}
+                  onChange={handleChange}
+                >
+                  <option value="">Pilih kegiatan kamu</option>
+                  <option value="relaksasi">Relaksasi</option>
+                  <option value="tiduran">Tiduran</option>
+                  <option value="berkebun">Berkebun</option>
+                  <option value="memasak">Memasak</option>
+                  <option value="gym">Gym</option>
+                  <option value="berolahraga">Olahraga</option>
+                  <option value="berenang">Berenang</option>
+                </select>
+              </div>
+
+              {/* Blood Pressure */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Tekanan Darah Systolic</label>
+                <Input
+                  name="systolic"
+                  type="number"
+                  placeholder="Masukkan tekanan darah"
+                  value={formData.systolic}
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
@@ -167,36 +192,14 @@ export default function Check() {
                   <option value="bahagia">Bahagia</option>
                   <option value="tenang">Tenang</option>
                   <option value="netral">Netral</option>
+                  <option value="biasa">Biasa</option>
                   <option value="marah">Marah</option>
                   <option value="cemas">Cemas</option>
                   <option value="sedih">Sedih</option>
                 </select>
               </div>
 
-              {/* Blood Pressure */}
-              <div>
-                <label className="block text-sm text-gray-600 mb-2">Tekanan Darah Systolic</label>
-                <Input
-                  name="systolic"
-                  type="number"
-                  placeholder="Masukkan tekanan darah"
-                  value={formData.systolic}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
 
-              <div>
-                <label className="block text-sm text-gray-600 mb-2">Tekanan Darah Diastolic</label>
-                <Input
-                  name="diastolic"
-                  type="number"
-                  placeholder="Masukkan tekanan darah"
-                  value={formData.diastolic}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
             </div>
 
             {/* Submit and Back Buttons */}

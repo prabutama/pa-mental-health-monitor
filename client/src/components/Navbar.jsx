@@ -33,7 +33,7 @@ const Navbar = () => {
 
   // Menu items
   const Links = [
-    { name: "Home", link: "/" },
+    { name: "Home", link: "#home" },
     { name: "About Us", link: "#about" },
     { name: "Services", link: "#services" },
     { name: "Artikel", link: "#artikel" },

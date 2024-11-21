@@ -43,7 +43,7 @@ activities_mapping = {
     'moderate': [
         'berjalan', 'bekerja', 'mengurus pekerjaan rumah', 'yoga', 'berkebun', 
         'bersepeda santai', 'membersihkan rumah', 'mengangkat beban ringan', 
-        'berbelanja', 'bermain dengan anak', 'cooking', 'bermain game'
+        'berbelanja', 'bermain dengan anak', 'memasak', 'bermain game'
     ],
     'high': [
         'lari', 'berolahraga', 'gym', 'latihan intensitas tinggi', 'berenang', 'bersepeda',
