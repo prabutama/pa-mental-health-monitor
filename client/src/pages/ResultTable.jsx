@@ -32,7 +32,7 @@ const ResultTable = () => {
     if (error) return <p className="text-red-500 text-center">Error: {error}</p>;
 
     return (
-        <div className="overflow-x-auto my-10 px-10">
+        <div className="overflow-x-auto my-10">
             <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-lg">
                 <thead>
                     <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">

@@ -4,7 +4,6 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import Check from "../pages/Check";
-import Profile from "../pages/Profile";
 import ResultLayout from "@/pages/layouts/ResultLayout";
 import ResultTable from "@/pages/ResultTable";
 import ResultChart from "@/pages/ResultChart";
@@ -15,14 +14,6 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Home />,
-    },
-    {
-        path: "/profile",
-        element: <Profile />,
-    },
-    {
-        path: "/result",
-        element: <ResultLayout/>,
     },
     {
         path: "/login",
@@ -41,10 +32,10 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: "/profile",
+        path: "/result",
         element: (
             <PrivateRoute>
-                <Profile />
+                <ResultLayout />
             </PrivateRoute>
         ),
         children: [

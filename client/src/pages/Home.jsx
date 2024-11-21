@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import mainTop from "@/assets/images/mainTop.png";
 import rectangle from "@/assets/images/Rectangle.png";
@@ -125,10 +126,10 @@ const Home = () => {
         </div>
       </div>
       {/* About Us */}
-      <h1 className="font-semibold text-xl md:text-3xl text-center mt-20">
+      <div className="aboutUS p-10 pt-20 flex flex-col md:flex-row">
+        <h1 className="font-semibold text-xl md:text-3xl text-center">
           About Us
         </h1>
-      <div id="about" className="aboutUS p-10 pt-20 flex flex-col md:flex-row">
         <div className="imgAboutUs mb-8 md:mb-0 md:w-1/2 pt-10">
           <img src={aboutUs} className="w-full h-auto" alt="About Us" />
         </div>
@@ -147,13 +148,13 @@ const Home = () => {
         </div>
       </div>
       {/* Services */}
-      <div id="services" className="services p-10 pt-24 text-center">
+      <div className="services p-10 pt-24 text-center">
         <h1 className="font-semibold text-xl">Services</h1>
         <h1 className="pt-8 font-semibold text-4xl">
           Empowering Minds Our Mental Health Consulting Services
         </h1>
         <div className="listServices pt-20">
-          <ul className="flex flex-col md:flex-row justify-center md:justify-center gap-10 space-y-10 md:space-y-0">
+          <ul className="flex flex-col md:flex-row justify-center md:justify-between space-y-10 md:space-y-0">
             <li>
               <div className="tesKesehatan w-80 h-64 p-5 border-2 border-black rounded-3xl">
                 <h1 className="font-semibold">Tes Kesehatan Mental</h1>
