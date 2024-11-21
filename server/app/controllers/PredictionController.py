@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_jwt_extended import get_jwt_identity
 import joblib  # type: ignore
-from ..text_classification import map_phrase_to_category, activities_mapping, mood_mapping  # type: ignore
+from ml.text_classification import map_phrase_to_category, activities_mapping, mood_mapping  # type: ignore
 import pandas as pd  # type: ignore
 from app import db, response
 from app.models.MentalHealthInput import MentalHealthInput
@@ -49,19 +49,13 @@ def predict_mental_health():
                 "Mood": [encoded_mood],
             }
         )
+        mental_conditionSh = ''
 
         # Make prediction
         prediction = model.predict(input_data)
 
         # Decode the prediction
         mental_condition = le_condition.inverse_transform(prediction)[0]
-
-        if mental_condition.lower() == "normal":
-            mental_condition = "Keadaan mental anda saat ini sedang normal"
-        elif mental_condition.lower() == "anxious":
-            mental_condition = "Keadaan mental anda saat ini sedang cemas"
-        elif mental_condition.lower() == "stress":
-            mental_condition = "Keadaan mental anda saat ini sedang stress"
 
         # Get current user
         current_user = get_jwt_identity()

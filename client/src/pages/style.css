@@ -1,14 +1,19 @@
 @media (max-width: 768px) {
-    .mainTop {
-      padding: 10px 5%;
-    }
-    .textMain {
-      text-align: center;
-    }
-    .imageMain {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px; /* Space between text and image */
-    }
+  .mainTop {
+    padding: 10px 5%;
   }
-  
+  .textMain {
+    text-align: center;
+  }
+  .imageMain {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Space between text and image */
+  }
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+

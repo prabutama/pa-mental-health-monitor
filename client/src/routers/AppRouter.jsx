@@ -9,11 +9,24 @@ import ResultTable from "@/pages/ResultTable";
 import ResultChart from "@/pages/ResultChart";
 import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
 import { useAuth } from "../context/AuthContext"; // Impor useAuth
+import TestSkeleton from "@/pages/TestSkeleton";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Home />,
+    },
+    {
+        path: "/skel",
+        element: <TestSkeleton />,
+    },
+    {
+        path: "/profile",
+        element: <Profile />,
+    },
+    {
+        path: "/result",
+        element: <ResultLayout/>,
     },
     {
         path: "/login",

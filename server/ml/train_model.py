@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report
 import joblib 
 
 # Membaca dataset dari file CSV
-df = pd.read_csv("ml/mental_health_conditions.csv")
+df = pd.read_csv("mental_health_conditions.csv")
 
 # Menghapus baris yang mengandung nilai kosong (NaN) agar data bersih
 df = df.dropna()  
@@ -66,7 +66,7 @@ print(classification_report(y_test, predictions, target_names=target_names, labe
 
 # Menyimpan model yang sudah dilatih dan LabelEncoder ke dalam file .pkl
 # Tujuannya agar model dapat digunakan kembali untuk prediksi di masa depan tanpa perlu pelatihan ulang
-joblib.dump(model, "ml/mental_health_model.pkl")
-joblib.dump(le_activities, "ml/le_activities.pkl")
-joblib.dump(le_mood, "ml/le_mood.pkl")
-joblib.dump(le_condition, "ml/le_condition.pkl")
+joblib.dump(model, "mental_health_model.pkl")
+joblib.dump(le_activities, "le_activities.pkl")
+joblib.dump(le_mood, "le_mood.pkl")
+joblib.dump(le_condition, "le_condition.pkl")

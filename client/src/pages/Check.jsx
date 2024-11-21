@@ -32,12 +32,11 @@ export default function Check() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if all required fields are filled
-        const { skin_tension, sleep_time, body_temp, heart_rate, systolic, diastolic } = formData;
-        if (!skin_tension || !sleep_time || !body_temp || !heart_rate || !systolic || !diastolic) {
-            console.error('All fields must be filled');
-            return;
-        }
+    const { skin_tension, sleep_time, body_temp, heart_rate, systolic, diastolic } = formData;
+    if (!skin_tension || !sleep_time || !body_temp || !heart_rate || !systolic || !diastolic) {
+      console.error('All fields must be filled');
+      return;
+    }
 
         // Get token from localStorage
         const token = localStorage.getItem('access_token');
@@ -46,25 +45,23 @@ export default function Check() {
             return;
         }
 
-        try {
-            // Add user_id to the formData before sending
-            const response = await axios.post(
-                'http://127.0.0.1:5000/check',
-                { ...formData }, // Add user_id here
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
-            console.log('Response:', response.data);
-            navigate('/result/health-table');
-        } catch (error) {
-            console.error('Error:', error.response ? error.response.data : error.message);
+    try {
+      // Send request with form data
+      const response = await axios.post(
+        'http://127.0.0.1:5000/check',
+        { ...formData },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    };
-
-
+      );
+      console.log('Response:', response.data);
+      navigate('/result');
+    } catch (error) {
+      console.error('Error:', error.response ? error.response.data : error.message);
+    }
+  };
 
     return (
         <>
@@ -87,57 +84,59 @@ export default function Check() {
                             </div>
                         </div>
 
-                        {/* htmlForm Inputs */}
-                        <form onSubmit={handleSubmit}>
-                            <div className="flex justify-center">
-                                <div className="grid grid-cols-2 gap-6 mb-6 w-full max-w-5xl">
-                                    {/* Ketegangan Kulit */}
-                                    <div className="mt-5">
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="ketegangan">Ketegangan Kulit</label>
-                                        <Input name='skin_tension' type="number" id="ketegangan"
-                                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            placeholder="Masukkan ketegangan kulit"
-                                            value={formData.skin_tension} onChange={handleChange} />
-                                    </div>
-                                    {/* Waktu Tidur */}
-                                    <div className="mt-5">
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="tidur">Waktu Tidur</label>
-                                        <Input name='sleep_time' type="number" id="tidur"
-                                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            placeholder="Masukkan waktu tidur"
-                                            value={formData.sleep_time} onChange={handleChange} />
-                                    </div>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* Skin Tension */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Ketegangan Kulit</label>
+                <Input
+                  name="skin_tension"
+                  type="number"
+                  placeholder="Masukkan ketegangan kulit"
+                  value={formData.skin_tension}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
 
-                                    {/* Suhu Tubuh */}
-                                    <div className="mt-5">
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="suhu">Suhu Tubuh</label>
-                                        <Input name='body_temp' type="number" id="suhu"
-                                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            placeholder="Masukkan suhu tubuh"
-                                            value={formData.body_temp} onChange={handleChange} />
-                                    </div>
+              {/* Sleep Time */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Waktu Tidur</label>
+                <Input
+                  name="sleep_time"
+                  type="number"
+                  placeholder="Masukkan waktu tidur"
+                  value={formData.sleep_time}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
 
-                                    {/* Apa yang telah kamu lakukan */}
-                                    <div className="mt-5">
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="kegiatan">Apa yang telah kamu lakukan?</label>
-                                        <select
-                                            name='activity'
-                                            id="kegiatan"
-                                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            value={formData.activity}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="">Pilih kegiatan kamu</option>
-                                            <option value="membaca buku">Membaca buku</option>
-                                            <option value="mendengarkan musik">Mendengarkan Musik</option>
-                                            <option value="tiduran">Tiduran</option>
-                                            <option value="santai">Berkerja</option>
-                                            <option value="berjalan">Berjalan</option>
-                                            <option value="berolahraga">Olahraga</option>
-                                            <option value="berenang">berenang</option>
-    
-                                        </select>
-                                    </div>
+              {/* Body Temperature */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Suhu Tubuh</label>
+                <Input
+                  name="body_temp"
+                  type="number"
+                  placeholder="Masukkan suhu tubuh"
+                  value={formData.body_temp}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              {/* diastolic */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Tekanan Darah Diastolic</label>
+                <Input
+                  name="diastolic"
+                  type="number"
+                  placeholder="Masukkan tekanan darah"
+                  value={formData.diastolic}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
 
                                     {/* Detak Jantung */}
                                     <div className="-mt-3">
@@ -148,30 +147,25 @@ export default function Check() {
                                             value={formData.heart_rate} onChange={handleChange} />
                                     </div>
 
-                                    {/* Bagaimana perasaanmu hari ini */}
-                                    <div>
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="perasaan">Bagaimana perasaanmu hari
-                                            ini?</label>
-                                         <select
-                                            name='mood'
-                                            id="perasaan"
-                                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            value={formData.mood}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="">Pilih kegiatan kamu</option>
-                                            <option value="bahagia">bahagia</option>
-                                            <option value="tenang">tenang</option>
-                                            <option value="netral">netral</option>
-                                            <option value="santai">santai</option>
-                                            <option value="biasa">biasa</option>
-                                            <option value="marah">marah</option>
-                                            <option value="cemas">cemas</option>
-                                            <option value="sedih">sedih</option>
-
-    
-                                        </select>
-                                    </div>
+              {/* Activity */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Apa yang telah kamu lakukan?</label>
+                <select
+                  name="activity"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  value={formData.activity}
+                  onChange={handleChange}
+                >
+                  <option value="">Pilih kegiatan kamu</option>
+                  <option value="relaksasi">Relaksasi</option>
+                  <option value="tiduran">Tiduran</option>
+                  <option value="berkebun">Berkebun</option>
+                  <option value="memasak">Memasak</option>
+                  <option value="gym">Gym</option>
+                  <option value="berolahraga">Olahraga</option>
+                  <option value="berenang">Berenang</option>
+                </select>
+              </div>
 
                                     {/* Tekanan Darah */}
                                     <div className="-mt-4">
@@ -182,15 +176,28 @@ export default function Check() {
                                             value={formData.systolic} onChange={handleChange} />
                                     </div>
 
-                                    <div className="-mt-4">
-                                        <label className="block text-sm text-black-600 mb-2" htmlFor="tekanan">Tekanan Darah Diastolic</label>
-                                        <Input name='diastolic' type="number" id="tekanan"
-                                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                            placeholder="Masukkan tekanan darah"
-                                            value={formData.diastolic} onChange={handleChange} />
-                                    </div>
-                                </div>
-                            </div>
+              {/* Mood */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">Bagaimana perasaanmu hari ini?</label>
+                <select
+                  name="mood"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  value={formData.mood}
+                  onChange={handleChange}
+                >
+                  <option value="">Pilih perasaan kamu</option>
+                  <option value="bahagia">Bahagia</option>
+                  <option value="tenang">Tenang</option>
+                  <option value="netral">Netral</option>
+                  <option value="biasa">Biasa</option>
+                  <option value="marah">Marah</option>
+                  <option value="cemas">Cemas</option>
+                  <option value="sedih">Sedih</option>
+                </select>
+              </div>
+
+
+            </div>
 
                             {/* Submit and Back Buttons */}
                             <div className="flex justify-center mt-6">

@@ -21,7 +21,7 @@ const Home = () => {
       {/* navbar */}
       <Navbar />
       {/* mainTop */}
-      <div className="mainTop p-10 pt-36 flex flex-col md:flex-row gap-16">
+      <div className="mainTop p-10 pt-36 flex flex-col md:flex-row gap-16" id="home">
         <div className="textMain flex-1">
           <h1 className="text-4xl md:text-5xl font-semibold">
             Healthy Minds, <span className="text-green-900">Happy Lives</span>
@@ -195,7 +195,7 @@ const Home = () => {
         </div>
       </div>
       {/* Artikel */}
-      <div className="artikel pt-20">
+      <div id="artikel" className="pt-20">
         <h1 className="font-semibold text-4xl text-center">
           Baca Artikel Baru
         </h1>
