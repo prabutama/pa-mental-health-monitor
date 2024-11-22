@@ -25,10 +25,9 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
-  // Handle logout and hide button
   const handleLogout = () => {
     logout();
-    setOpen(false); // Close dropdown or mobile menu if open
+    setOpen(false); 
   };
 
   // Menu items
@@ -82,7 +81,7 @@ const Navbar = () => {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link to="/profile">
+                    <Link to="/profile/health-table">
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                     </Link>
                     <Link to="/result">

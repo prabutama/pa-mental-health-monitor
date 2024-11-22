@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 const ResultTable = () => {
     const { user } = useAuth(); // Ambil user dari context
@@ -24,6 +25,16 @@ const ResultTable = () => {
         }
     };
 
+    const handleDelete = async (inputId) => {
+        try {
+            await axios.delete(`http://127.0.0.1:5000/result/${inputId}`);
+            setSubmittedData((prevData) => prevData.filter((item) => item.input_id !== inputId));
+        } catch (error) {
+            setError(error.response?.data?.error || error.message || "Terjadi kesalahan saat menghapus data.");
+        }
+    };
+
+
     useEffect(() => {
         fetchHealthResults();
     }, [user]); // Tambahkan user sebagai dependensi
@@ -32,7 +43,7 @@ const ResultTable = () => {
     if (error) return <p className="text-red-500 text-center">Error: {error}</p>;
 
     return (
-        <div className="overflow-x-auto my-10 px-10">
+        <div className="overflow-x-auto my-10 px-0">
             <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-lg">
                 <thead>
                     <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
@@ -45,6 +56,7 @@ const ResultTable = () => {
                         <th className="py-3 px-6 text-left">Systolic</th>
                         <th className="py-3 px-6 text-left">Mood</th>
                         <th className="py-3 px-6 text-left">Mental Condition</th>
+                        <th className="py-3 px-6 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
@@ -64,6 +76,14 @@ const ResultTable = () => {
                                 <td className="py-4 px-6">{result.systolic} mmHg</td>
                                 <td className="py-4 px-6">{result.mood}</td>
                                 <td className="py-4 px-6">{result.mental_condition}</td>
+                                <td className="py-4 px-6">
+                                    <button
+                                        onClick={() => handleDelete(result.input_id)}
+                                        className="text-red-500 hover:text-red-700"
+                                    >
+                                        <TrashIcon className="w-5 h-5" />
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     )}

@@ -4,13 +4,12 @@ import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 
 const ResultChart = () => {
-    const { user } = useAuth(); // Get the authenticated user from the context
+    const { user } = useAuth();
     const [submittedData, setSubmittedData] = useState([]);
     const [mentalConditions, setMentalConditions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Fetch health results for the authenticated user
     const fetchHealthResults = async () => {
         const userId = user?.id;
         if (!userId) {
@@ -30,29 +29,27 @@ const ResultChart = () => {
 
     useEffect(() => {
         fetchHealthResults();
-    }, [user]); // Fetch data again when the user changes
+    }, [user]); 
 
     useEffect(() => {
         if (submittedData.length === 0) return;
 
-        // Extract the data for charting
         const dates = submittedData.map(result => new Date(result.created_at).toLocaleDateString());
         const skinTensionData = submittedData.map(result => result.skin_tension || 0);
         const bodyTemperatureData = submittedData.map(result => result.body_temperature);
         const heartRateData = submittedData.map(result => result.heart_rate);
         const systolicData = submittedData.map(result => result.systolic);
         const diastolicData = submittedData.map(result => result.diastolic);
-        const sleepData = submittedData.map(result => result.sleep_time || 0); // Assuming sleep_time is in hours
+        const sleepData = submittedData.map(result => result.sleep_time || 0); 
 
-        // Ensure that mentalConditions is populated correctly
         const mentalConditionMapped = mentalConditions.map(condition => {
             if (condition === 'Normal') return 0;
             if (condition === 'Anxious') return 1;
             if (condition === 'Stress') return 2;
-            return -1; // In case of unexpected values
+            return -1;
         });
 
-        const mentalConditionCounts = [0, 0, 0]; // [Normal, Anxious, Stress]
+        const mentalConditionCounts = [0, 0, 0]; 
         mentalConditionMapped.forEach(condition => {
             if (condition >= 0 && condition <= 2) mentalConditionCounts[condition]++;
         });
@@ -69,7 +66,7 @@ const ResultChart = () => {
                 toolbar: { show: false },
             },
             xaxis: {
-                categories: dates, // Use the extracted dates for X-axis categories
+                categories: dates,
                 title: { text: 'Date' },
                 labels: { style: { fontSize: '10px' } },
             },
@@ -86,7 +83,6 @@ const ResultChart = () => {
             },
         };
 
-        // Chart options for Skin Tension
         const skinTensionOptions = {
             ...commonOptions,
             series: [{ name: 'Skin Tension', data: skinTensionData }],
@@ -94,7 +90,6 @@ const ResultChart = () => {
             title: { text: 'Skin Tension Over Time' },
         };
 
-        // Chart options for Body Temperature
         const bodyTemperatureOptions = {
             ...commonOptions,
             series: [{ name: 'Body Temperature (°C)', data: bodyTemperatureData }],
@@ -102,7 +97,7 @@ const ResultChart = () => {
             title: { text: 'Body Temperature Over Time' },
         };
 
-        // Chart options for Blood Pressure (Systolic and Diastolic)
+        // Chart options for Blood 
         const bloodPressureOptions = {
             ...commonOptions,
             series: [
@@ -113,7 +108,6 @@ const ResultChart = () => {
             title: { text: 'Blood Pressure Over Time' },
         };
 
-        // Chart options for Heart Rate
         const heartRateOptions = {
             ...commonOptions,
             series: [{ name: 'Heart Rate (bpm)', data: heartRateData }],
@@ -121,7 +115,6 @@ const ResultChart = () => {
             title: { text: 'Heart Rate Over Time' },
         };
 
-        // Updated options for sleep time as a bar chart
         const sleepOptions = {
             chart: {
                 type: 'bar',
@@ -135,18 +128,17 @@ const ResultChart = () => {
                 },
             ],
             xaxis: {
-                categories: dates, // Use the extracted dates for X-axis categories
+                categories: dates, 
                 title: { text: 'Date' },
             },
             colors: ['#00E396'],
             title: { text: 'Sleep Duration Over Time' },
         };
 
-        // Chart options for Mental Condition
         const mentalConditionOptions = {
             ...commonOptions,
             chart: {
-                type: 'line',  // Change to line chart
+                type: 'line', 
                 height: 300,
                 toolbar: { show: false },
             },
@@ -159,7 +151,7 @@ const ResultChart = () => {
             colors: ['#FF5733'],
             title: { text: 'Mental Condition Over Time' },
             xaxis: {
-                categories: dates, // Use the extracted dates for X-axis categories
+                categories: dates, 
                 title: { text: 'Date' },
                 labels: {
                     style: { fontSize: '10px' },
@@ -168,21 +160,20 @@ const ResultChart = () => {
             yaxis: {
                 min: 0,
                 max: 2,
-                tickAmount: 3,  // Mengatur jumlah tick
+                tickAmount: 3,  
                 labels: {
                     formatter: function (value) {
-                        // Mengganti angka dengan label yang sesuai
                         const labels = ['Normal', 'Anxious', 'Stress'];
                         return labels[value] || '';
                     }
                 }
             },
             markers: {
-                size: 5,  // Add markers to points
+                size: 5, 
                 colors: ['#FF5733'],
             },
             stroke: {
-                curve: 'smooth', // Smooth line
+                curve: 'smooth', 
                 width: 3,
             },
             legend: {
@@ -224,7 +215,7 @@ const ResultChart = () => {
     if (error) return <p className="text-red-500 text-center">Error: {error}</p>;
 
     return (
-        <div className="mt-10 w-full px-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="mt-10 w-full px-0 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="chart-container">
                 <div id="skinTensionChart"></div>
             </div>
