@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom"; // Import untuk navigasi
 
 export default function MentalHealthResult() {
   const { user } = useAuth();
+  const navigate = useNavigate(); // Hook untuk navigasi
   const [mentalCondition, setMentalCondition] = useState("Loading...");
   const [suggestions, setSuggestions] = useState([]);
 
@@ -86,6 +88,22 @@ export default function MentalHealthResult() {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="mt-6 flex justify-center space-x-4">
+          <button
+            onClick={() => navigate("/profile/health-table")}
+            className="px-6 py-3  bg-emerald-600 text-white font-medium rounded-lg shadow hover:bg-emerald-500"
+          >
+            Ke Profil
+          </button>
+          <button
+            onClick={() => navigate("/")}
+            className="px-6 py-3 bg-teal-600 text-white font-medium rounded-lg shadow hover:bg-teal-500"
+          >
+            Ke Beranda
+          </button>
         </div>
       </main>
     </div>
