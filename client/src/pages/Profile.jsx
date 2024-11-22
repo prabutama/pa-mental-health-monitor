@@ -30,7 +30,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     logout();
-    setOpen(false); 
+    setOpen(false);
   };
 
   return (
@@ -88,9 +88,23 @@ export default function Profile() {
       </header>
 
 
-
       {/* Main Section */}
       <main className="p-8 max-w-7xl mx-auto mt-8 space-y-10">
+        {/* Breadcrumb */}
+        <nav className="text-md mb-6">
+          <ol className="list-reset flex">
+            <li>
+              <Link to="/" className="text-blue-600 hover:underline">
+                Home
+              </Link>
+            </li>
+            <li>
+              <span className="mx-2">/</span>
+            </li>
+            <li className="text-gray-600">Profile</li>
+          </ol>
+        </nav>
+
         {/* General Info */}
         <section className="bg-white p-8 rounded-lg shadow-xl">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">General Information</h2>

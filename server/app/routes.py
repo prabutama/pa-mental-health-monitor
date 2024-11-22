@@ -59,7 +59,7 @@ def check():
     return PredictionController.predict_mental_health()
 
 @app.route('/result/<string:user_id>', methods=['GET'])
-def mental_health_results_for_user(user_id):  
+def mental_health_results_for_user(user_id):  # Ubah nama fungsi
     return MentalHealthController.get_mental_health_results_by_user(user_id)
 
 
