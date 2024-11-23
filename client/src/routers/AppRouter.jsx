@@ -11,6 +11,7 @@ import ResultChart from "@/pages/ResultChart";
 import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
 import { useAuth } from "../context/AuthContext"; // Impor useAuth
 import TestSkeleton from "@/pages/TestSkeleton";
+import Dashboard from "@/pages/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/result",
-        element: <ResultLayout/>,
+        element: <ResultLayout />,
     },
     {
         path: "/login",
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <RegisterPage />,
+    },
+    {
+        path: "/dashboard",
+        element: (
+            <PrivateRoute>
+                <Dashboard />
+            </PrivateRoute>
+        ),
     },
     {
         path: "/check",

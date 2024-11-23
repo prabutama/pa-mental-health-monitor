@@ -27,12 +27,12 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    setOpen(false); 
+    setOpen(false);
   };
 
   // Menu items
   const Links = [
-    { name: "Home", link: "#home" },
+    { name: "Home", link: "/" },
     { name: "About Us", link: "#about" },
     { name: "Services", link: "#services" },
     { name: "Artikel", link: "#artikel" },
@@ -54,9 +54,8 @@ const Navbar = () => {
         </div>
 
         <ul
-          className={`md:flex md:items-center gap-8 md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
-            open ? "top-20 " : "top-[-490px]"
-          }`}
+          className={`md:flex md:items-center gap-8 md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? "top-20 " : "top-[-490px]"
+            }`}
         >
           {Links.map((link) => (
             <li
@@ -82,11 +81,18 @@ const Navbar = () => {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <Link to="/profile/health-table">
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
                     </Link>
                     <Link to="/result">
-                    <DropdownMenuItem>Lihat Hasil</DropdownMenuItem>
+                      <DropdownMenuItem>Lihat Hasil</DropdownMenuItem>
                     </Link>
+                    {
+                      user.role === "admin" && (
+                        <Link to="/dashboard">
+                          <DropdownMenuItem>Dashbooard</DropdownMenuItem>
+                        </Link>
+                      )
+                    }
                     <DropdownMenuItem asChild>
                       <AlertDialog>
                         <AlertDialogTrigger>
@@ -118,7 +124,7 @@ const Navbar = () => {
               </Button>
             </Link>
           )}
-          
+
           {/* Mobile Logout Button - Hidden if user is logged out */}
           {user && (
             <Button
