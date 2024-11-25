@@ -1,8 +1,7 @@
-// src/App.js
 import React from 'react';
 import { AuthProvider } from './context/AuthContext';
-import { RouterProvider } from 'react-router-dom'; // Pastikan ini diimpor
-import router from './routers/AppRouter'; // Pastikan rutenya diimpor
+import { RouterProvider } from 'react-router-dom'; 
+import router from './routers/AppRouter';
 
 const App = () => {
   return (
