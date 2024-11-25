@@ -7,8 +7,6 @@ __pycache__/
 *.py[cod]
 
 # Environment variables
-.env
-*.env
 
 # Logs
 *.log
