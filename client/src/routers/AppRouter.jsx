@@ -12,6 +12,7 @@ import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
 import { useAuth } from "../context/AuthContext"; // Impor useAuth
 import TestSkeleton from "@/pages/TestSkeleton";
 import Dashboard from "@/pages/Dashboard";
+import UserDetail from "@/pages/UserDetail";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         element: (
             <PrivateRoute>
                 <Dashboard />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/dashboard/user/:id",
+        element: (
+            <PrivateRoute>
+                <UserDetail />
             </PrivateRoute>
         ),
     },

@@ -3,13 +3,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth(); // Ambil fungsi login dari AuthContext
   const navigate = useNavigate();
+
+  const [alert, setAlert] = useState(null); // State untuk menampilkan alert
 
   // Fungsi untuk validasi email
   const validateEmail = (email) => {
@@ -22,20 +24,20 @@ const LoginPage = () => {
 
     // Validasi: pastikan email dan password tidak kosong
     if (!email || !password) {
-      Swal.fire({
-        icon: 'error',
+      setAlert({
+        type: 'error',
         title: 'Error',
-        text: 'Please enter both email and password',
+        description: 'Please enter both email and password',
       });
       return; // Hentikan eksekusi lebih lanjut jika salah satu field kosong
     }
 
     // Validasi: pastikan format email benar
     if (!validateEmail(email)) {
-      Swal.fire({
-        icon: 'warning',
+      setAlert({
+        type: 'warning',
         title: 'Invalid Email',
-        text: 'Please enter a valid email address.',
+        description: 'Please enter a valid email address.',
       });
       return; // Hentikan eksekusi jika email tidak valid
     }
@@ -66,20 +68,22 @@ const LoginPage = () => {
       // Gunakan login dari AuthContext
       login(access_token, user); // Panggil fungsi login
 
-      Swal.fire({
-        icon: 'success',
+      setAlert({
+        type: 'success',
         title: 'Login Successful',
-        text: 'You have successfully logged in!',
-      }).then(() => {
-        // Redirect after alert is dismissed
-        navigate('/');
+        description: 'You have successfully logged in!',
       });
+
+      // Redirect after alert is shown
+      setTimeout(() => {
+        navigate('/');
+      }, 2000); // Redirect setelah 2 detik
     } catch (error) {
-      // Tampilkan SweetAlert2 jika login gagal
-      Swal.fire({
-        icon: 'error',
+      // Tampilkan alert jika login gagal
+      setAlert({
+        type: 'error',
         title: 'Login Failed',
-        text: error.response?.data?.message || 'Incorrect email or password. Please try again.',
+        description: error.response?.data?.message || 'Incorrect email or password. Please try again.',
       });
     }
   };
@@ -95,9 +99,16 @@ const LoginPage = () => {
       <img src="https://res.cloudinary.com/dizrlkdhe/image/upload/v1726552642/e1cmdel32akcxjmun49a.png" alt="Icon 1" style={{ position: 'absolute', top: '140px', left: '60px', width: '450px', height: '350px' }} />
       <img src="https://res.cloudinary.com/dizrlkdhe/image/upload/v1726552642/dpwkmdrbfkuupuadbejy.png" alt="Icon 2" style={{ position: 'absolute', bottom: '40px', right: '60px', width: '350px', height: '250px' }} />
       {/* Card Login */}
-      <div className="relative bg-white rounded-[40px] shadow-lg p-8 mt-5 w-[577px] scale-[0.85] h-[680px] max-w-md z-10">
+      <div className="relative bg-white rounded-[40px] shadow-lg p-8 mt-5 w-[577px] scale-[0.85] h-fit max-w-md z-10">
         <h2 className="text-3xl font-semibold text-center mt-2 mb-4">Log In</h2>
-        <p className="text-center text-black-500 mb-12">Hi! Welcome back, you've been missed</p>
+        <p className="text-center text-black-500 mb-2">Hi! Welcome back, you've been missed</p>
+        {/* Tampilkan alert jika ada */}
+        {alert && (
+          <Alert type={alert.type} className={`mb-4 ${alert.type === 'error' ? 'bg-red-200' : 'bg-green-200'}`}>
+            <AlertTitle>{alert.title}</AlertTitle>
+            <AlertDescription>{alert.description}</AlertDescription>
+          </Alert>
+        )}
         <form className="space-y-6" onSubmit={loginUser}>
           <div className="relative mb-6">
             <input name="email" type="email" id="email" className="input-underline w-full mb-5" placeholder="Enter your username or email address" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -130,29 +141,9 @@ const LoginPage = () => {
         </form>
         <div className="mt-8">
           <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="mt-5 relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or sign in with</span>
-            </div>
-          </div>
-          <div className="mt-10 grid grid-cols-2 gap-4">
-            <div>
-              <button className="w-full inline-flex items-center justify-center py-1 px-3 border border-gray-300 rounded-md shadow-sm bg-white text-xs font-medium text-black-500 hover:bg-gray-50">
-                <img src="https://www.vectorlogo.zone/logos/google/google-icon.svg" alt="Google" className="h-5 w-5 mr-2" />
-                Sign in with Google
-              </button>
-            </div>
-            <div>
-              <button className="w-full inline-flex items-center justify-center py-1 px-3 border border-gray-300 rounded-md shadow-sm bg-white text-xs font-medium text-black-500 hover:bg-gray-50">
-                <img src="https://www.vectorlogo.zone/logos/apple/apple-icon.svg" alt="Apple" className="h-5 w-5 mr-2" />
-                Sign in with Apple
-              </button>
-            </div>
           </div>
         </div>
-        <div className="mt-16 text-sm text-center">
+        <div className="mt-6 text-sm text-center">
           <a href="/register" className="font-medium text-black hover:text-green-500">
             Don't have an account? <span className="text-custom-blue">Sign Up</span>
           </a>

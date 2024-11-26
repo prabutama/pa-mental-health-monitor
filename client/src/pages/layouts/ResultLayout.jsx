@@ -37,7 +37,7 @@ export default function MentalHealthResult() {
         "Kurangi beban kerja jika memungkinkan.",
         "Cobalah konseling atau berbicara dengan teman.",
       ],
-      cemas: [
+      anxious: [
         "Batasi asupan kafein.",
         "Latih pernapasan dalam untuk relaksasi.",
         "Jaga pola tidur yang teratur.",

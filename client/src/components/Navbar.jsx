@@ -80,12 +80,20 @@ const Navbar = () => {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link to="/profile/health-table">
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                    </Link>
-                    <Link to="/result">
-                      <DropdownMenuItem>Lihat Hasil</DropdownMenuItem>
-                    </Link>
+                    {
+                      user.role === "user" && (
+                        <Link to="/profile/health-table">
+                          <DropdownMenuItem>Profile</DropdownMenuItem>
+                        </Link>
+                      )
+                    }
+                    {
+                      user.role === "user" && (
+                        <Link to="/result">
+                          <DropdownMenuItem>Lihat Hasil</DropdownMenuItem>
+                        </Link>
+                      )
+                    }
                     {
                       user.role === "admin" && (
                         <Link to="/dashboard">
@@ -96,7 +104,7 @@ const Navbar = () => {
                     <DropdownMenuItem asChild>
                       <AlertDialog>
                         <AlertDialogTrigger>
-                          <Button className="bg-red-500 text-white w-32">
+                          <Button className="bg-red-500 text-white w-32 hover:bg-red-600">
                             Logout
                           </Button>
                         </AlertDialogTrigger>
@@ -106,7 +114,7 @@ const Navbar = () => {
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleLogout}>
+                            <AlertDialogAction onClick={handleLogout} className="bg-red-500 hover:bg-red-600">
                               Yes, Logout
                             </AlertDialogAction>
                           </AlertDialogFooter>

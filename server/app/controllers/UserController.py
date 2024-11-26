@@ -135,12 +135,11 @@ def login():
 def getAllUsers():
     try:
         # Query semua pengguna
-        users = User.query.all()
+        users = User.query.where(User.role == "user").all()
 
         # Format data
         data = []
         for user in users:
-            # Hitung jumlah riwayat hasil cek kesehatan mental
             mental_health_count = (
                 MentalHealthClassification.query.join(
                     MentalHealthInput,
@@ -167,3 +166,34 @@ def getAllUsers():
     except Exception as e:
         print(f"Error saat mendapatkan data pengguna: {str(e)}")
         return response.BadRequest([], "Gagal mendapatkan data semua pengguna")
+
+
+def getUserDetail(user_id):
+    try:
+        user = User.query.get(user_id)  # Query untuk mencari user berdasarkan user_id
+        if not user:
+            return response.BadRequest([], "Pengguna tidak ditemukan")
+
+        mental_health_count = (
+            MentalHealthClassification.query.join(
+                MentalHealthInput,
+                MentalHealthClassification.input_id == MentalHealthInput.id,
+            )
+            .filter(MentalHealthInput.user_id == user.id)
+            .count()
+        )
+
+        data = {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role,
+            "age": user.age,
+            "gender": user.gender,
+            "mental_health_history_count": mental_health_count,
+        }
+
+        return response.success(data, "Berhasil mendapatkan detail pengguna")
+    except Exception as e:
+        print(f"Error saat mendapatkan detail pengguna: {str(e)}")
+        return response.BadRequest([], "Gagal mendapatkan detail pengguna")

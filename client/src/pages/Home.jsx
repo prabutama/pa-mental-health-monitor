@@ -23,8 +23,8 @@ const Home = () => {
       <div className="mainTop p-10 pt-36 flex flex-col md:flex-row gap-16" id="home">
         <div className="textMain flex-1">
           <h1 className="text-4xl md:text-5xl font-semibold">
-            Healthy Minds, <span className="text-green-900">Happy Lives</span>
-            Mental Health Consultancy
+            <span className="text-green-900">MindTrack, </span>
+            Mental Health Consultancy Platform
           </h1>
           <p className="w-full md:w-96 pt-6 md:pt-12 text-base md:text-lg">
             Together we build a healthy mind and a happier life. Counseling and

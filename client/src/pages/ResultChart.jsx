@@ -3,7 +3,7 @@ import ApexCharts from 'apexcharts';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 
-const ResultChart = () => {
+const ResultChart = (props) => {
     const { user } = useAuth();
     const [submittedData, setSubmittedData] = useState([]);
     const [mentalConditions, setMentalConditions] = useState([]);
@@ -11,7 +11,7 @@ const ResultChart = () => {
     const [error, setError] = useState(null);
 
     const fetchHealthResults = async () => {
-        const userId = user?.id;
+        const userId = props.userData ? props.userData.id : user?.id;
         if (!userId) {
             setLoading(false);
             return;
@@ -29,7 +29,7 @@ const ResultChart = () => {
 
     useEffect(() => {
         fetchHealthResults();
-    }, [user]); 
+    }, [user]);
 
     useEffect(() => {
         if (submittedData.length === 0) return;
@@ -40,16 +40,16 @@ const ResultChart = () => {
         const heartRateData = submittedData.map(result => result.heart_rate);
         const systolicData = submittedData.map(result => result.systolic);
         const diastolicData = submittedData.map(result => result.diastolic);
-        const sleepData = submittedData.map(result => result.sleep_time || 0); 
+        const sleepData = submittedData.map(result => result.sleep_time || 0);
 
         const mentalConditionMapped = mentalConditions.map(condition => {
-            if (condition === 'Normal') return 0;
+            if (condition === 'Normal') return 2;
             if (condition === 'Anxious') return 1;
-            if (condition === 'Stress') return 2;
+            if (condition === 'Stress') return 0;
             return -1;
         });
 
-        const mentalConditionCounts = [0, 0, 0]; 
+        const mentalConditionCounts = [0, 0, 0];
         mentalConditionMapped.forEach(condition => {
             if (condition >= 0 && condition <= 2) mentalConditionCounts[condition]++;
         });
@@ -128,7 +128,7 @@ const ResultChart = () => {
                 },
             ],
             xaxis: {
-                categories: dates, 
+                categories: dates,
                 title: { text: 'Date' },
             },
             colors: ['#00E396'],
@@ -138,7 +138,7 @@ const ResultChart = () => {
         const mentalConditionOptions = {
             ...commonOptions,
             chart: {
-                type: 'line', 
+                type: 'line',
                 height: 300,
                 toolbar: { show: false },
             },
@@ -151,7 +151,7 @@ const ResultChart = () => {
             colors: ['#FF5733'],
             title: { text: 'Mental Condition Over Time' },
             xaxis: {
-                categories: dates, 
+                categories: dates,
                 title: { text: 'Date' },
                 labels: {
                     style: { fontSize: '10px' },
@@ -160,20 +160,20 @@ const ResultChart = () => {
             yaxis: {
                 min: 0,
                 max: 2,
-                tickAmount: 3,  
+                tickAmount: 4,
                 labels: {
                     formatter: function (value) {
-                        const labels = ['Normal', 'Anxious', 'Stress'];
+                        const labels = ['Stress', 'Anxious', 'Normal'];
                         return labels[value] || '';
                     }
                 }
             },
             markers: {
-                size: 5, 
+                size: 5,
                 colors: ['#FF5733'],
             },
             stroke: {
-                curve: 'smooth', 
+                curve: 'smooth',
                 width: 3,
             },
             legend: {

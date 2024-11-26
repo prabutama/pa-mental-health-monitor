@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -110,10 +112,13 @@ export default function Dashboard() {
                                                 {user.email}
                                             </td>
                                             <td className="px-6 py-4 text-center text-sm text-gray-800 border-b">
-                                                {user.mental_health_history_count || 0} {/* Menampilkan jumlah hasil kesehatan */}
+                                                {user.mental_health_history_count || 0}
                                             </td>
                                             <td className="px-6 py-4 text-sm flex justify-center items-center space-x-2 border-b">
-                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 shadow">
+                                                <button
+                                                    className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
+                                                    onClick={() => navigate(`/dashboard/user/${user.id}`)}
+                                                >
                                                     Lihat Detail
                                                 </button>
                                             </td>

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link, Outlet } from "react-router-dom";
 import logo from "@/assets/images/logo.svg";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import {
   DropdownMenu,
@@ -47,11 +48,10 @@ export default function Profile() {
                 <p className="text-lg font-medium">{user?.name || "Name"}</p>
                 <p className="text-sm">{user?.email || "Email"}</p>
               </div>
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c33cc13e365f92734afbb04b9e9af129c02245fe2d52e8acb0ee46191e16a17"
-                alt="User"
-                className="object-cover w-12 h-12 rounded-full shadow-md ring-2 ring-teal-300"
-              />
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             </div>
           </DropdownMenuTrigger>
 

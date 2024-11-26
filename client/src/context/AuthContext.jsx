@@ -17,9 +17,10 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('access_token');
-        localStorage.removeItem('user'); // Hapus informasi pengguna saat logout
+        localStorage.removeItem('user'); 
         setIsAuthenticated(false);
-        setUser(null); // Reset state user
+        setUser(null); 
+        window.location.href = '/';
     };
 
     return (

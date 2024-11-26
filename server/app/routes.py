@@ -27,13 +27,21 @@ def check():
 
 
 @app.route("/result/<string:user_id>", methods=["GET"])
-def mental_health_results_for_user(user_id):  # Ubah nama fungsi
-    
+def mental_health_results_for_user(user_id):
     return MentalHealthController.get_mental_health_results_by_user(user_id)
 
+@app.route("/result/<string:input_id>", methods=["DELETE"])
+@jwt_required()
+def delete_mental_health_record(input_id):
+    return MentalHealthController.delete_mental_health_record(input_id)
 
 @app.route("/admin/users", methods=["GET"])
 @jwt_required()
 def get_all_users():
     return UserController.getAllUsers()
 
+
+@app.route("/admin/users/<string:user_id>", methods=["GET"])
+@jwt_required()
+def get_user_by_id(user_id):
+    return UserController.getUserDetail(user_id)
